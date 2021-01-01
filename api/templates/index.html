@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>
+            BLOGS
+        </title>
+    </head>
+
+    <body>
+        
+        {%for blog in blogs%}
+            <h2>{{blog.title}}</h2>
+            <p>{{blog.description}}</p>
+        {%endfor%}
+    </body>
+</html>

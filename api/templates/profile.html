@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>
+            {{ user.user_name }}
+        </title>
+    </head>
+
+    <body>
+        <h1>{{ user.user_name }}</h1>
+        <img src="{{ user.profile_pic }}" height="250" width="250"/>
+        <ul>
+        {%for blog in blogs%}
+        <li>
+            <h2>{{blog.title}}</h2>
+            <p>{{blog.description}}</p>
+            </li>
+        {%endfor%}
+        </ul>
+        <input type="button" value="follow" method="POST">
+
+    </body>
+</html>
