@@ -27,3 +27,11 @@ class Following(models.Model):
 
     def __str__(self):
         return f"{self.follower} follows {self.followed}"
+
+class Comment(models.Model):
+    comment      =   models.TextField(null=True)
+    commenter    =   models.ForeignKey(User,on_delete=models.DO_NOTHING)         
+    post         =   models.ForeignKey(Blog,related_name="comments",on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return self.comment

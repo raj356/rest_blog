@@ -32,17 +32,22 @@ def blogs(request):
         "blogs": blogs
     })
 
-def profile(request,user_name):
-    id = Profile.objects.filter(user_name = user_name).first().id
+def profile(request,username):
+    id = User.objects.filter(username = username).first().id
     user    =    requests.get(
+        f"http://127.0.0.1:8000/api/user/{id}",
+        auth = HTTPBasicAuth('raj', '1234')
+    ).json()
+
+    user_profile = requests.get(
         f"http://127.0.0.1:8000/api/profile/{id}",
         auth = HTTPBasicAuth('raj', '1234')
     ).json()
 
     blogs = []
-    for blog in user.get("blog"):
+    for blog in user.get("blogs"):
         request_blog = requests.get(
-            blog,
+            f"http://127.0.0.1:8000/api/blog/{id}",
             auth = HTTPBasicAuth('raj', '1234')
         ).json()
 
@@ -51,7 +56,29 @@ def profile(request,user_name):
     print(user)
     return render(request, 'profile.html', context = {
         "user": user,
-        "blogs": blogs
+        "blogs": blogs,
+        "profile" : user_profile
     }) 
 
+def followers(request, username):
+    user_id = User.objects.filter(username=username).first().id
+    user_json = requests.get(
+        f"http://127.0.0.1:8000/api/user/{user_id}",
+        auth = HTTPBasicAuth('raj', '1234')
+    ).json()
+
+    followers_list = []
     
+    for follower in user_json.get("followers"):
+        follower_id = User.objects.filter(username = follower.get("username")).first().id
+        follower_json = requests.get(
+            f"http://127.0.0.1:8000/api/user/{follower_id}",
+            auth = HTTPBasicAuth('raj', '1234')
+        ).json()
+        print(follower_json)
+        followers_list.append(follower_json)
+
+    return render(request, 'followers.html', context = {
+        "followers" : followers_list,
+        "user" : user_json
+    })

@@ -12,21 +12,35 @@ class ProfileSerializer(serializers.ModelSerializer):
         model=Profile
         fields=[
             'id',
-            'profile_pic'
+            'profile_pic',
+            'bio',
+            'dob'
         ]
 
+class CommentSerializer(serializers.ModelSerializer):
+    commenter = serializers.SerializerMethodField()
+
+    class Meta:
+        model   =  Comment
+        fields  =  [
+              'comment',
+              'commenter',  
+        ]
+
+    def get_commenter(self,obj):
+        return obj.commenter.username    
 
 class BlogSerializer(serializers.ModelSerializer):
     # title       =   serializers.CharField(max_length=50)
     # description =   serializers.TextField()
     #author      =   serializers.ForeignKey
-
+    comments   =    CommentSerializer(many=True)
     class Meta:
         model=Blog
         fields=[
             'title',
             'description',
-            
+            'comments'
         ]
 
 class FollowingSerializer(serializers.ModelSerializer):
@@ -76,4 +90,5 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_following(self, obj):
         return FollowingSerializer(obj.following.all(), many=True).data
-    
+
+

@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>Followers - {{ user.username }}</title>
+    </head>
+    <body>
+        <ul>
+            {% for follower in followers %}
+            <li>
+                <h3><a href="{% url 'profile' follower.username %}">{{ follower.username }}</a></h3>                
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

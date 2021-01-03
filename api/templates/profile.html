@@ -1,13 +1,15 @@
 <html>
     <head>
         <title>
-            {{ user.user_name }}
+            {{ user.username }}
         </title>
     </head>
 
     <body>
-        <h1>{{ user.user_name }}</h1>
-        <img src="{{ user.profile_pic }}" height="250" width="250"/>
+        <h1>{{ user.username }}</h1>
+        <img src="{{ profile.profile_pic }}" height="250" width="250"/>
+        <p>Bio: {{ profile.bio }}</p>
+        <p>DOB: {{ profile.dob }}</p>
         <ul>
         {%for blog in blogs%}
         <li>
@@ -16,7 +18,6 @@
             </li>
         {%endfor%}
         </ul>
-        <input type="button" value="follow" method="POST">
-
+        <a href="{% url 'show-followers' user.username %}">Followers</a>
     </body>
 </html>
